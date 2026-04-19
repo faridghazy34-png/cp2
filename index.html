@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="BarHitung - Kalkulator pintar dengan NLP yang dapat menyelesaikan soal cerita matematika dalam Bahasa Indonesia">
+    <title>BarHitung - Kalkulator Pintar NLP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Tabs -->
+        <nav class="tab-bar" id="tabBar">
+            <button class="tab active" data-tab="kalkulator" id="tabKalkulator">Kalkulator</button>
+            <button class="tab" data-tab="nlp" id="tabNlp">Soal Cerita</button>
+            <button class="tab" data-tab="selengkapnya" id="tabSelengkapnya">Selengkapnya</button>
+            <div class="tab-indicator" id="tabIndicator"></div>
+        </nav>
+
+        <!-- Kalkulator Tab -->
+        <section class="tab-content active" id="contentKalkulator">
+            <div class="display-area" id="displayArea">
+                <div class="expression" id="expression"></div>
+                <div class="result" id="result">0</div>
+            </div>
+            <div class="history-icon" id="historyBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 8v4l3 3"/>
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M3 12a9 9 0 0 1 9-9"/>
+                </svg>
+            </div>
+            <!-- Drag Handle -->
+            <div class="drag-handle"></div>
+            <!-- Button Pad -->
+            <div class="button-pad" id="buttonPad">
+                <button class="btn func" data-action="clear" id="btnClear">C</button>
+                <button class="btn func" data-action="percent" id="btnPercent">%</button>
+                <button class="btn func" data-action="backspace" id="btnBackspace">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+                        <line x1="18" y1="9" x2="12" y2="15"/>
+                        <line x1="12" y1="9" x2="18" y2="15"/>
+                    </svg>
+                </button>
+                <button class="btn operator" data-action="operator" data-value="÷" id="btnDivide">÷</button>
+
+                <button class="btn number" data-action="number" data-value="7" id="btn7">7</button>
+                <button class="btn number" data-action="number" data-value="8" id="btn8">8</button>
+                <button class="btn number" data-action="number" data-value="9" id="btn9">9</button>
+                <button class="btn operator" data-action="operator" data-value="×" id="btnMultiply">×</button>
+
+                <button class="btn number" data-action="number" data-value="4" id="btn4">4</button>
+                <button class="btn number" data-action="number" data-value="5" id="btn5">5</button>
+                <button class="btn number" data-action="number" data-value="6" id="btn6">6</button>
+                <button class="btn operator" data-action="operator" data-value="-" id="btnMinus">−</button>
+
+                <button class="btn number" data-action="number" data-value="1" id="btn1">1</button>
+                <button class="btn number" data-action="number" data-value="2" id="btn2">2</button>
+                <button class="btn number" data-action="number" data-value="3" id="btn3">3</button>
+                <button class="btn operator" data-action="operator" data-value="+" id="btnPlus">+</button>
+
+                <button class="btn number" data-action="number" data-value="00" id="btn00">00</button>
+                <button class="btn number" data-action="number" data-value="0" id="btn0">0</button>
+                <button class="btn number" data-action="decimal" id="btnDecimal">,</button>
+                <button class="btn equals" data-action="equals" id="btnEquals">=</button>
+            </div>
+        </section>
+
+        <!-- NLP / Soal Cerita Tab -->
+        <section class="tab-content" id="contentNlp">
+            <div class="nlp-container">
+                <div class="chat-area" id="chatArea">
+                    <div class="chat-welcome">
+                        <div class="welcome-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                                <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                <line x1="15" y1="9" x2="15.01" y2="9"/>
+                            </svg>
+                        </div>
+                        <h2>Halo! Saya <span class="brand-name">BarHitung</span></h2>
+                        <p>Ketik soal cerita matematika dan saya akan menyelesaikannya untuk kamu!</p>
+                        <div class="example-chips">
+                            <button class="chip" data-example="Ani memiliki 12 apel, lalu dia memberikan 5 apel kepada Budi. Berapa sisa apel Ani?">Contoh: Sisa Apel</button>
+                            <button class="chip" data-example="Sebuah toko menjual 8 kotak susu per hari. Berapa kotak susu yang terjual dalam 7 hari?">Contoh: Penjualan Susu</button>
+                            <button class="chip" data-example="Siapa namamu?">Tanya: Siapa Namamu?</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-area">
+                    <div class="input-wrapper">
+                        <input type="text" id="nlpInput" placeholder="Ketik soal cerita di sini..." autocomplete="off">
+                        <button class="send-btn" id="sendBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Selengkapnya Tab -->
+        <section class="tab-content" id="contentSelengkapnya">
+            <div class="info-container">
+                <div class="info-card">
+                    <div class="info-avatar">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2"/>
+                            <path d="M9 9h.01M15 9h.01M9 15h6"/>
+                        </svg>
+                    </div>
+                    <h2>BarHitung</h2>
+                    <p class="version">v1.0.0</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>Tentang</h3>
+                    <p>BarHitung adalah kalkulator pintar yang dilengkapi dengan mesin NLP (Natural Language Processing) untuk menyelesaikan soal cerita matematika dalam Bahasa Indonesia.</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>Fitur</h3>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="feature-icon">🧮</span>
+                            <div>
+                                <strong>Kalkulator Standar</strong>
+                                <p>Operasi dasar: tambah, kurang, kali, bagi, persen</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon">📖</span>
+                            <div>
+                                <strong>Soal Cerita</strong>
+                                <p>Selesaikan soal cerita matematika dengan NLP</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🤖</span>
+                            <div>
+                                <strong>Asisten Cerdas</strong>
+                                <p>Tanya jawab interaktif dengan BarHitung</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon">📱</span>
+                            <div>
+                                <strong>Responsif</strong>
+                                <p>Tampilan optimal di semua perangkat</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h3>Cara Penggunaan Soal Cerita</h3>
+                    <div class="usage-tips">
+                        <div class="tip">
+                            <span class="tip-number">1</span>
+                            <p>Buka tab <strong>"Soal Cerita"</strong></p>
+                        </div>
+                        <div class="tip">
+                            <span class="tip-number">2</span>
+                            <p>Ketik soal cerita matematika dengan angka yang jelas</p>
+                        </div>
+                        <div class="tip">
+                            <span class="tip-number">3</span>
+                            <p>Tekan tombol kirim atau Enter</p>
+                        </div>
+                        <div class="tip">
+                            <span class="tip-number">4</span>
+                            <p>BarHitung akan menganalisis dan menjawab</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-footer">
+                    <p>Dibuat dengan ❤️ menggunakan JavaScript & CSS</p>
+                    <p class="copyright">© 2026 BarHitung</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Modal -->
+        <div class="modal-overlay" id="historyModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Riwayat Perhitungan</h3>
+                    <button class="modal-close" id="modalClose">×</button>
+                </div>
+                <div class="modal-body" id="historyList">
+                    <p class="empty-history">Belum ada riwayat</p>
+                </div>
+                <button class="clear-history-btn" id="clearHistory">Hapus Riwayat</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
